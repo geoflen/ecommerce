@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content%}
+<div class="container">
+    <h1>Products</h1>
+    <div class="container">
+        <div class="row">
+            {% for product in page.object_list %}
+            <div class="col-sm-3 mb-5">
+                <div class="card" style="width: 10rem">
+                    <img alt="{{product.name}}" class="card-img-top" src="{{product.image_url}}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{product.name}}</h5>
+                        <p class="card-text">{{ product.price }}</p>
+                        <a class="btn btn-primary" href="#">Add to Cart</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="mt-5">
+        <nav aria-label="Product pages">
+          <ul class="pagination justify-content-center" >
+              {% if page.has_previous %}
+                <li class="page-item"><a class="page-link" href="{% url 'index' %}?page=1">&laquo; First</a></li>
+                <li class="page-item"><a class="page-link" href="{% url 'index' %}?page={{page.previous_page_number}}">Previous</a></li>
+              {% else %}
+                <li class="page-item disabled"><a class="page-link" href="{% url 'index' %}?page=1" tabindex="-1" aria-disabled="true">&laquo; First</a></li>
+              {% endif%}
+              {% for num in page_list %}
+                {% if num ==  page.number%}
+                    <li class="page-item active"><a class="page-link" href="{% url 'index' %}?page={{ num }}">{{ num }}</a>
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="{% url 'index' %}?page={{ num }}">{{ num }}</a>
+                {% endif %}
+              {% endfor %}
+              {% if page.has_next %}
+                <li class="page-item"><a class="page-link"  href="{% url 'index' %}?page={{ page.next_page_number }}">Next</a></li>
+                <li class="page-item"><a class="page-link" href="{% url 'index' %}?page={{ page.paginator.num_pages }}">Last &raquo;</a></li>
+              {% else %}
+                <li class="page-item disabled"><a class="page-link" href="{% url 'index' %}?page={{ page.paginator.num_pages }} tabindex="-1" aria-disabled="true"">Last &raquo;</a></li>
+              {% endif %}
+          </ul>
+        </nav>
+    </div>
+</div>
+
+{% endblock %}
